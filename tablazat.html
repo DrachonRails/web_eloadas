@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Táblázat Validációval</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        #editForm {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #editForm label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #editForm input[type="text"],
+        #editForm button {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        #editForm button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        #editForm button:hover {
+            background-color: #45a049;
+        }
+        .actions button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Adatok</h2>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Email</th>
+                <th>Szám</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <h3>Új adat hozzáadása / Szerkesztése</h3>
+    <form id="editForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" readonly>
+        <div class="error" id="idError"></div>
+
+        <label for="name">Név (kötelező, min 2, max 50 karakter):</label>
+        <input type="text" id="name" name="name">
+        <div class="error" id="nameError"></div>
+
+        <label for="email">Email (kötelező, érvényes formátum):</label>
+        <input type="text" id="email" name="email">
+        <div class="error" id="emailError"></div>
+
+        <label for="number">Szám (kötelező, minimum 10, maximum 99):</label>
+        <input type="text" id="number" name="number">
+        <div class="error" id="numberError"></div>
+
+        <button type="button" onclick="saveData()">Mentés</button>
+        <button type="button" onclick="resetForm()">Mégse</button>
+    </form>
+
+    <script>
+        let data = [
+            { id: 1, name: "Kiss Béla", email: "bela.kiss@example.com", number: 25 },
+            { id: 2, name: "Nagy Anna", email: "anna.nagy@example.com", number: 88 },
+            { id: 3, name: "Szabó István", email: "istvan.szabo@example.com", number: 15 },
+            { id: 4, name: "Horváth Zsófia", email: "zsofia.horvath@example.com", number: 50 }
+        ];
+
+        let editItemId = null;
+
+        function renderTable() {
+            const tableBody = document.querySelector("#dataTable tbody");
+            tableBody.innerHTML = "";
+            data.forEach(item => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = item.id;
+                row.insertCell().textContent = item.name;
+                row.insertCell().textContent = item.email;
+                row.insertCell().textContent = item.number;
+                const actionsCell = row.insertCell();
+                const editButton = document.createElement("button");
+                editButton.textContent = "Szerkesztés";
+                editButton.classList.add("edit-btn");
+                editButton.onclick = () => editItem(item.id);
+                actionsCell.appendChild(editButton);
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Törlés";
+                deleteButton.classList.add("delete-btn");
+                deleteButton.onclick = () => deleteItem(item.id);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+        function validateField(fieldId, rules) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + "Error");
+            errorDiv.textContent = "";
+            let isValid = true;
+
+            if (rules.required && !field.value.trim()) {
+                errorDiv.textContent = "A mező kitöltése kötelező.";
+                isValid = false;
+            }
+
+            if (rules.minlength && field.value.length < rules.minlength) {
+                errorDiv.textContent = `Minimum ${rules.minlength} karakter szükséges.`;
+                isValid = false;
+            }
+
+            if (rules.maxlength && field.value.length > rules.maxlength) {
+                errorDiv.textContent = `Maximum ${rules.maxlength} karakter megengedett.`;
+                isValid = false;
+            }
+
+            if (rules.email && field.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
+                errorDiv.textContent = "Érvényes email formátum szükséges.";
+                isValid = false;
+            }
+
+            if (rules.min && rules.max && field.value.trim()) {
+                const numValue = parseInt(field.value);
+                if (isNaN(numValue) || numValue < rules.min || numValue > rules.max) {
+                    errorDiv.textContent = `A szám értéke ${rules.min} és ${rules.max} között kell legyen.`;
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        function validateForm() {
+            const isNameValid = validateField("name", { required: true, minlength: 2, maxlength: 50 });
+            const isEmailValid = validateField("email", { required: true, email: true });
+            const isNumberValid = validateField("number", { required: true, min: 10, max: 99 });
+            return isNameValid && isEmailValid && isNumberValid;
+        }
+
+        function saveData() {
+            if (validateForm()) {
+                const idInput = document.getElementById("id");
+                const nameInput = document.getElementById("name");
+                const emailInput = document.getElementById("email");
+                const numberInput = document.getElementById("number");
+
+                const newItem = {
+                    id: editItemId !== null ? editItemId : data.length + 1,
+                    name: nameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    number: parseInt(numberInput.value)
+                };
+
+                if (editItemId !== null) {
+                    const index = data.findIndex(item => item.id === editItemId);
+                    if (index !== -1) {
+                        data[index] = newItem;
+                    }
+                    editItemId = null;
+                } else {
+                    data.push(newItem);
+                }
+
+                resetForm();
+                renderTable();
+            }
+        }
+
+        function editItem(id) {
+            const itemToEdit = data.find(item => item.id === id);
+            if (itemToEdit) {
+                editItemId = id;
+                document.getElementById("id").value = itemToEdit.id;
+                document.getElementById("name").value = itemToEdit.name;
+                document.getElementById("email").value = itemToEdit.email;
+                document.getElementById("number").value = itemToEdit.number;
+            }
+        }
+
+        function deleteItem(id) {
+            if (confirm("Biztosan törölni szeretnéd ezt az elemet?")) {
+                data = data.filter(item => item.id !== id);
+                renderTable();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("id").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("number").value = "";
+            document.querySelectorAll(".error").forEach(error => error.textContent = "");
+            editItemId = null;
+        }
+
+        renderTable(); // Kezdeti táblázat megjelenítése
+    </script>
+
+</body>
+</html>
