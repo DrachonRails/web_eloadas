@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src = "ajax.js"></script>
+  <title>Ajax</title>
+  </head>
+  <body>
+    <div id = 'code'></div>
+    <div id = 'readDiv'></div>
+    <div id = 'createDiv'>
+      <h1>Create</h1>
+      Name (required, max 30): <input id="name1" type="text"></input><br>
+      height (required, max 30): <input id="height1" type="number"></input><br>
+      weight (required, max 30): <input id="weight1" type="number"></input><br>
+      code (required, BBBBBBefg456) <input id="code1" type="varchar"></input><br>
+      <button type="submit" onclick="create();">Create</button><br>
+      <div id = 'createResult'></div>
+    </div> 
+    <div id = 'updateDiv'>
+      <h1>Update</h1>
+      ID (required): <input id="idUpd" type="text"></input><br> 
+      <button type="submit" onclick="getDataForId();">getDataForId</button><br>
+      Name (required, max 30): <input id="name2" type="text"></input><br>
+      height (required, max 30): <input id="height2" type="number"></input><br>
+      weight (required, max 30): <input id="weight2" type="number"></input><br>
+      code (required, BBBBBBefg456) <input id="code1" type="varchar"></input><br>
+      <button type="submit" onclick="update();">Update</button><br>
+      <div id = 'updateResult'></div>      
+    </div> 
+    <div id = 'deleteDiv'>
+      <h1>Delete</h1>
+      ID (required): <input id="idDel" type="number"></input><br> 
+      <button type="submit" onclick="deleteF();">Delete</button><br>
+      <div id = 'deleteResult'></div>      
+    </div> 
+  </body>
+</html>

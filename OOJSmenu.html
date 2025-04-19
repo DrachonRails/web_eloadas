@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>Szabályos Sokszög Számítások</title>
+
+</head>
+<body>
+    <h1>Szabályos Sokszög Számítások</h1>
+    <label for="sides">Oldalak száma:</label>
+    <input type="number" id="sides" name="sides"><br>
+    <label for="sideLength">Oldalhossz:</label>
+    <input type="number" id="sideLength" name="sideLength"><br>
+    <button onclick="calculate()">Számítás</button>
+
+    <h2>Eredmények:</h2>
+    <div id="results"></div>
+
+    <script>
+        class Shape {
+            constructor(sides, sideLength) {
+                this.sides = sides;
+                this.sideLength = sideLength;
+            }
+
+            perimeter() {
+                return this.sides * this.sideLength;
+            }
+
+            area() {
+                const apothem = this.sideLength / (2 * Math.tan(Math.PI / this.sides));
+                return (this.perimeter() * apothem) / 2;
+            }
+        }
+
+        class Polygon extends Shape {
+            constructor(sides, sideLength) {
+                super(sides, sideLength);
+            }
+
+            interiorAngle() {
+                return ((this.sides - 2) * 180) / this.sides;
+            }
+
+            exteriorAngle() {
+                return 360 - ((this.sides - 2) * 180) / this.sides;
+            }
+        }
+
+        function calculate() {
+            const sides = document.getElementById('sides').value;
+            const sideLength = document.getElementById('sideLength').value;
+            const polygon = new Polygon(sides, sideLength);
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            const perimeterP = document.createElement('p');
+            perimeterP.innerText = `Kerület: ${polygon.perimeter()}`;
+            document.body.appendChild(perimeterP);
+
+            const areaP = document.createElement('p');
+            areaP.innerText = `Terület: ${polygon.area()}`;
+            document.body.appendChild(areaP);
+
+            const interiorAngleP = document.createElement('p');
+            interiorAngleP.innerText = `Belső szög: ${polygon.interiorAngle()}`;
+            document.body.appendChild(interiorAngleP);
+
+            const exteriorAngleP = document.createElement('p');
+            exteriorAngleP.innerText = `Külső szög: ${polygon.exteriorAngle()}`;
+            document.body.appendChild(exteriorAngleP);
+        }
+    </script>
+</body>
+</html>
