@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5</title>
+  <style>
+    section {
+      border: 1px solid #ccc;
+      margin: 1em 0;
+      padding: 1em;
+    }
+    h2 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>HTML5 API-k</h1>
+
+  <!-- Web Storage -->
+  <section id="web-storage">
+    <h2>Web Storage (localStorage)</h2>
+    <input type="text" id="storageInput" placeholder="Írj valamit...">
+    <button onclick="saveToStorage()">Mentés</button>
+    <button onclick="loadFromStorage()">Betöltés</button>
+    <p id="storageOutput"></p>
+  </section>
+
+  <!-- Web Worker -->
+  <section id="web-worker">
+    <h2>Web Worker</h2>
+    <button onclick="startWorker()">Számolás indítása</button>
+    <p id="workerResult">Eredmény itt jelenik meg</p>
+  </section>
+
+  <!-- Server-Sent Events -->
+  <section>
+    <h2>Server-Sent Events – Wikimedia stream</h2>
+    <div id="sse-output">🔄 Várakozás az eseményekre...</div>
+  
+    <script>
+      if (!!window.EventSource) {
+        const output = document.getElementById("sse-output");
+  
+        const source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
+  
+        source.onmessage = function(event) {
+          const data = JSON.parse(event.data);
+          output.innerHTML = `
+            📝 <strong>${data.title}</strong> szerkesztve a(z) <em>${data.wiki}</em> wikiben
+            <br>Felhasználó: ${data.user}
+          `;
+        };
+  
+        source.onerror = function() {
+          output.innerHTML = "❌ Kapcsolat megszakadt vagy hiba történt.";
+        };
+      } else {
+        document.getElementById("sse-output").innerText = "A böngésződ nem támogatja a Server-Sent Events-et.";
+      }
+    </script>
+  </section>
+  
+
+  <!-- Geolocation API -->
+  <section id="geolocation">
+    <h2>Geolocation API</h2>
+    <button onclick="getLocation()">Mutasd a helyem</button>
+    <p id="locationOutput"></p>
+  </section>
+
+  <!-- Drag and Drop -->
+  <section id="drag-drop">
+    <h2>Drag and Drop</h2>
+    <div id="drag" draggable="true" ondragstart="dragStart(event)" style="width:100px;height:100px;background:red;"></div>
+    <div id="drop" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:200px;height:200px;background:#eee;margin-top:1em;"></div>
+  </section>
+
+  <!-- Canvas -->
+  <section id="canvas">
+    <h2>Canvas</h2>
+    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000;"></canvas>
+  </section>
+
+  <!-- SVG -->
+  <section id="svg">
+    <h2>SVG</h2>
+    <svg width="200" height="100">
+      <circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="lightblue" />
+      <text x="50" y="55" font-size="14" text-anchor="middle" fill="#000">SVG</text>
+    </svg>
+  </section>
+
+  <!-- Script -->
+  <script>
+    // Web Storage
+    function saveToStorage() {
+      const val = document.getElementById('storageInput').value;
+      localStorage.setItem('myValue', val);
+    }
+    function loadFromStorage() {
+      document.getElementById('storageOutput').textContent = localStorage.getItem('myValue');
+    }
+
+    // Web Worker
+    let worker;
+    function startWorker() {
+      if (typeof(Worker) !== "undefined") {
+        if (!worker) {
+          worker = new Worker("worker.js");
+        }
+        worker.onmessage = function(e) {
+          document.getElementById("workerResult").textContent = e.data;
+        };
+        worker.postMessage("start");
+      } else {
+        alert("A böngésződ nem támogatja a Web Worker API-t.");
+      }
+    }
+
+    // Geolocation
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          document.getElementById("locationOutput").textContent = 
+            "Szélesség: " + position.coords.latitude + 
+            ", Hosszúság: " + position.coords.longitude;
+        });
+      } else {
+        document.getElementById("locationOutput").textContent = "A böngésződ nem támogatja a Geolocation API-t.";
+      }
+    }
+
+    // Drag & Drop
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+    function dragStart(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+    function drop(ev) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text");
+      ev.target.appendChild(document.getElementById(data));
+    }
+
+    // Canvas rajzolás
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "green";
+    ctx.fillRect(10, 10, 150, 75);
+  </script>
+
+</body>
+</html>
