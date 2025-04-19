@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <title>React Beadandó – Kő Papír Olló & Stopper</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      nav {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <button onclick="setApp('game')">Kő Papír Olló</button>
+      <button onclick="setApp('stopper')">Stopper</button>
+    </nav>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+      const { useState, useEffect } = React;
+
+      // Kő Papír Olló játék
+      function KoPapirOllo() {
+        const choices = ["Kő", "Papír", "Olló"];
+        const [playerChoice, setPlayerChoice] = useState("");
+        const [computerChoice, setComputerChoice] = useState("");
+        const [result, setResult] = useState("");
+        const [score, setScore] = useState(0);
+
+        const play = (choice) => {
+          const computer = choices[Math.floor(Math.random() * 3)];
+          setPlayerChoice(choice);
+          setComputerChoice(computer);
+
+          if (choice === computer) {
+            setResult("Döntetlen!");
+          } else if (
+            (choice === "Kő" && computer === "Olló") ||
+            (choice === "Papír" && computer === "Kő") ||
+            (choice === "Olló" && computer === "Papír")
+          ) {
+            setResult("Nyertél!");
+            setScore(score + 1);
+          } else {
+            setResult("Vesztettél!");
+            setScore(score - 1);
+          }
+        };
+
+        return (
+          <div>
+            <h2>Kő – Papír – Olló</h2>
+            {choices.map((choice) => (
+              <button key={choice} onClick={() => play(choice)}>
+                {choice}
+              </button>
+            ))}
+            <p>Te: {playerChoice}</p>
+            <p>Számítógép: {computerChoice}</p>
+            <p>Eredmény: {result}</p>
+            <p>Pontszám: {score}</p>
+          </div>
+        );
+      }
+
+      // Stopper
+      function Stopper() {
+        const [time, setTime] = useState(0);
+        const [running, setRunning] = useState(false);
+
+        useEffect(() => {
+          let interval;
+          if (running) {
+            interval = setInterval(() => {
+              setTime((t) => t + 1);
+            }, 10); // Módosítva, hogy milliszekundumot mérjünk
+          }
+          return () => clearInterval(interval);
+        }, [running]);
+
+        return (
+          <div>
+            <h2>Stopper</h2>
+            <p>{time / 100} másodperc</p> {/* Ez milliszekundumban lesz */}
+            <button onClick={() => setRunning(true)}>Indít</button>
+            <button onClick={() => setRunning(false)}>Megállít</button>
+            <button onClick={() => { setTime(0); setRunning(false); }}>Nulláz</button>
+          </div>
+        );
+      }
+
+      // Az alkalmazás fő komponens
+      function App({ activeApp }) {
+        return (
+          <div>
+            {activeApp === "game" && <KoPapirOllo />}
+            {activeApp === "stopper" && <Stopper />}
+          </div>
+        );
+      }
+
+      // Kezdeti alkalmazás állapot
+      let currentApp = "game";
+      function setApp(app) {
+        currentApp = app;
+        render();
+      }
+
+      function render() {
+        ReactDOM.createRoot(document.getElementById("root")).render(<App activeApp={currentApp} />);
+      }
+
+      render(); // Kezdeti render
+    </script>
+  </body>
+</html>
