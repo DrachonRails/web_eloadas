@@ -7,60 +7,112 @@ h1 {
 color: yellow;
 }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333; 
-  }
-  
-  .navbar a {
-    float: left;
-    font-size: 16px;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  .subnav {
-    float: left;
-    overflow: hidden;
-  }
-  
-  .subnav .subnavbtn {
-    font-size: 16px;  
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit;
-    margin: 0;
-  }
-  
-  .navbar a:hover, .subnav:hover .subnavbtn {
-    background-color: red;
-  }
-  
-  .subnav-content {
-    display: none;
-    position: absolute;
-    left: 0;
-    background-color: red;
-    width: 100%;
-    z-index: 1;
-  }
-  
-  .subnav-content a {
-    float: left;
-    color: white;
-    text-decoration: none;
-  }
-  
-  .subnav-content a:hover {
-    background-color: #eee;
-    color: black;
-  }
-  
-  .subnav:hover .subnav-content {
-    display: block;
-  }
+
+/* chartJS.html */
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+  margin: 20px auto;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+canvas {
+  display: block;
+  margin: 20px auto;
+}
+
+/* tablazat.html */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #696969;
+}
+.error {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+#editForm {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#editForm label {
+  display: block;
+  margin-bottom: 5px;
+}
+#editForm input[type="text"],
+#editForm button {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+#editForm button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+#editForm button:hover {
+  background-color: #45a049;
+}
+.actions button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin: 20px auto;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+canvas {
+  display: block;
+  margin: 20px auto;
+}
