@@ -1,4 +1,4 @@
-
+code="null";
 url="http://gamf.nhely.hu/ajax2/";
 async function read() {
   document.getElementById("code").innerHTML="code="+code;
