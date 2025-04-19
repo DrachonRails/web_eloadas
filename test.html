@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>AJAX CRUD Példa</title>
+    <style>
+        @import "style.css";   
+    </style>
+
+</head>
+<body>
+    <h1>AJAX CRUD Példa</h1>
+
+    <h2>Adatok</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Magasság</th>
+                <th>Súly</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody id="dataTableBody">
+            <!-- Dinamikusan generált sorok -->
+        </tbody>
+    </table>
+
+    <h2>Új rekord hozzáadása</h2>
+    <form onsubmit="event.preventDefault(); createData(nameInput.value, heightInput.value, weightInput.value);">
+        <label for="nameInput">Név:</label>
+        <input type="text" id="nameInput" required>
+        <label for="heightInput">Magasság:</label>
+        <input type="text" id="heightInput" required>
+        <label for="weightInput">Súly:</label>
+        <input type="text" id="weightInput" required>
+        <button type="submit">Hozzáadás</button>
+    </form>
+
+    <script>
+        const apiUrl = "http://gamf.nhely.hu/ajax2/";
+        const userCode = "EAPH4Prtw425"; // Cseréld ki a saját kódodra!
+
+        // READ: Adatok lekérdezése
+        function readData() {
+            fetch(`${apiUrl}?op=read&code=${userCode}`)
+                .then(response => {
+                    console.log("Válasz státusza:", response.status);
+                    return response.text(); // A válasz szövegét olvassuk be
+                })
+                .then(text => {
+                    console.log("Válasz szövege:", text);
+                    return JSON.parse(text); // JSON-ná alakítás
+                })
+                .then(data => {
+                    console.log("Lekérdezett adatok:", data);
+                    renderTable(data.list);
+                })
+                .catch(error => console.error("Hiba a lekérdezés során:", error));
+        }
+
+        // CREATE: Új rekord létrehozása
+        function createData(name, height, weight) {
+            const params = new URLSearchParams({
+                op: "create",
+                name: name,
+                height: height,
+                weight: weight,
+                code: userCode
+            });
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: params.toString()
+            })
+                .then(response => response.text())
+                .then(result => {
+                    console.log("Létrehozás eredménye:", result);
+                    readData(); // Frissítjük az adatokat
+                })
+                .catch(error => console.error("Hiba a létrehozás során:", error));
+        }
+
+        // UPDATE: Rekord módosítása
+        function updateData(id, name, height, weight) {
+            const params = new URLSearchParams({
+                op: "update",
+                id: id,
+                name: name,
+                height: height,
+                weight: weight,
+                code: userCode
+            });
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: params.toString()
+            })
+                .then(response => response.text())
+                .then(result => {
+                    console.log("Módosítás eredménye:", result);
+                    readData(); // Frissítjük az adatokat
+                })
+                .catch(error => console.error("Hiba a módosítás során:", error));
+        }
+
+        // DELETE: Rekord törlése
+        function deleteData(id) {
+            const params = new URLSearchParams({
+                op: "delete",
+                id: id,
+                code: userCode
+            });
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: params.toString()
+            })
+                .then(response => response.text())
+                .then(result => {
+                    console.log("Törlés eredménye:", result);
+                    readData(); // Frissítjük az adatokat
+                })
+                .catch(error => console.error("Hiba a törlés során:", error));
+        }
+
+        // Táblázat megjelenítése
+        function renderTable(data) {
+            const tableBody = document.getElementById("dataTableBody");
+            tableBody.innerHTML = ""; // Töröljük a korábbi adatokat
+
+            data.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td>${row.name}</td>
+                    <td>${row.height}</td>
+                    <td>${row.weight}</td>
+                    <td>
+                        <button onclick="updateData(${row.id}, 'Új Név', '180', '75')">Módosítás</button>
+                        <button onclick="deleteData(${row.id})">Törlés</button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Oldal betöltésekor adatok lekérdezése
+        document.addEventListener("DOMContentLoaded", readData);
+    </script>    
+</body>
+</html>

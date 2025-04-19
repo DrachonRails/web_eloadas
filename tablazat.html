@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -5,66 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Táblázat Validációval</title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+        @import "style.css";
         th {
-            background-color: #f2f2f2;
-        }
-        .error {
-            color: red;
-            font-size: 0.8em;
-            margin-top: 5px;
-        }
-        #editForm {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #editForm label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        #editForm input[type="text"],
-        #editForm button {
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        #editForm button {
-            background-color: #4CAF50;
-            color: white;
             cursor: pointer;
-        }
-        #editForm button:hover {
-            background-color: #45a049;
-        }
-        .actions button {
-            margin-right: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        .edit-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 3px;
-        }
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 3px;
         }
     </style>
 </head>
@@ -75,15 +19,22 @@
     <table id="dataTable">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Név</th>
-                <th>Email</th>
-                <th>Szám</th>
+                <th onclick="sortTable(0)">ID</th>
+                <th onclick="sortTable(1)">Név</th>
+                <th onclick="sortTable(2)">Email</th>
+                <th onclick="sortTable(3)">Szám</th>
                 <th>Műveletek</th>
+            </tr>
+            <tr>
+                <th><input type="text" class="mySearch" onkeyup="filterTable(0)" placeholder="Keresés ID szerint"></th>
+                <th><input type="text" class="mySearch" onkeyup="filterTable(1)" placeholder="Keresés Név szerint"></th>
+                <th><input type="text" class="mySearch" onkeyup="filterTable(2)" placeholder="Keresés Email szerint"></th>
+                <th><input type="text" class="mySearch" onkeyup="filterTable(3)" placeholder="Keresés Szám szerint"></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            </tbody>
+        </tbody>
     </table>
 
     <h3>Új adat hozzáadása / Szerkesztése</h3>
@@ -139,6 +90,33 @@
                 deleteButton.onclick = () => deleteItem(item.id);
                 actionsCell.appendChild(deleteButton);
             });
+        }
+
+        function sortTable(columnIndex) {
+            const isAscending = document.querySelectorAll("th")[columnIndex].classList.toggle("asc");
+            data.sort((a, b) => {
+                const valA = Object.values(a)[columnIndex];
+                const valB = Object.values(b)[columnIndex];
+                if (typeof valA === "string") {
+                    return isAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return isAscending ? valA - valB : valB - valA;
+            });
+            renderTable();
+        }
+
+        function filterTable(columnIndex) {
+            const input = document.querySelectorAll(".mySearch")[columnIndex];
+            const filter = input.value.toUpperCase();
+            const rows = document.querySelector("#dataTable tbody").rows;
+            for (let i = 0; i < rows.length; i++) {
+                const cell = rows[i].cells[columnIndex];
+                if (cell && cell.textContent.toUpperCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
         }
 
         function validateField(fieldId, rules) {
