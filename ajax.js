@@ -1,106 +1,134 @@
-const apiUrl = 'https://your-api-endpoint.com';  // Cseréld ki az API URL-jére
-
-// Helper function for AJAX request
-function makeRequest(url, method, data = {}) {
-    return fetch(url, {
-        method: method,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    }).then(response => response.json())
-      .then(data => data)
-      .catch(error => console.error('Error:', error));
+code="EAPH4Pwtr425";
+url="http://gamf.nhely.hu/ajax2/";
+async function read() {
+  document.getElementById("code").innerHTML="code="+code;
+  let response = await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: "code="+code+"&op=read"
+  });
+  let data = await response.text();
+  data = JSON.parse(data);
+  let list = data.list;
+  str="<H1>Read</H1>";
+  str+="<p>Number of records: "+data.rowCount+"</p>";
+  str+="<p>Last max "+data.maxNum+" records:</p>";
+  str+="<table><tr><th>id</th><th>name</th><th>height</th><th>weight</th><th>code</th></tr>";
+  for(let i=0; i<list.length; i++)
+    str += "<tr><td>"+list[i].id+"</td><td>"+list[i].name+"</td><td>"+list[i].height+"</td><td>"+list[i].weight+"</td><td>"+list[i].code+"</td></tr>";
+  str +="</table>";
+  document.getElementById("readDiv").innerHTML=str;
 }
 
-// CREATE function
-document.getElementById('createForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+async function create(){
+  // name: reserved word
+  nameStr = document.getElementById("name1").value;
+  height = document.getElementById("height1").value;
+  weight = document.getElementById("weight1").value;
+  if(nameStr.length>0 && nameStr.length<=30 && height.length>0 && height.length<=30 && weight.length>0 && weight.length<=30 && code.length<=30){
+    let response = await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: "code="+code+"&op=create&name="+nameStr+"&height="+height+"&weight="+weight
+    });
+    let data = await response.text(); 
+    if(data>0)
+      str="Create successful!";
+    else
+    str="Create NOT successful!";
+    document.getElementById("createResult").innerHTML=str;
+    document.getElementById("name1").value="";
+    document.getElementById("height1").value="";
+    document.getElementById("weight1").value="";
+    read();
+  }
+  else
+    document.getElementById("createResult").innerHTML="Validation error!!";
+}
 
-    const name = document.getElementById('name').value;
-    const height = parseInt(document.getElementById('height').value);
-    const weight = parseInt(document.getElementById('weight').value);
-    const code = document.getElementById('code').value;
-
-    // Validation
-    if (name === '' || height <= 0 || weight <= 0 || code === '') {
-        alert('Minden mező kitöltése kötelező!');
-        return;
+async function getDataForId() {
+  let response = await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: "code="+code+"&op=read"
+  });
+  let data = await response.text();
+  data = JSON.parse(data);
+  let list = data.list;
+  for(let i=0; i<list.length; i++)
+    if(list[i].id==document.getElementById("idUpd").value){
+      document.getElementById("name2").value=list[i].name;
+      document.getElementById("height2").value=list[i].height;
+      document.getElementById("weight2").value=list[i].weight;
     }
+}
 
-    const data = { op: 'create', name, height, weight, code };
+async function update(){
+  // name: reserved word
+  id = document.getElementById("idUpd").value;
+  nameStr = document.getElementById("name2").value;
+  height = document.getElementById("height2").value;
+  weight = document.getElementById("weight2").value;
+  if(id.length>0 && id.length<=30 && nameStr.length>0 && nameStr.length<=30 && height.length>0 && height.length<=30 && weight.length>0 && weight.length<=30 && code.length<=30){
+    let response = await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: "code="+code+"&op=update&id="+id+"&name="+nameStr+"&height="+height+"&weight="+weight
+    });
+    let data = await response.text(); 
+    if(data>0)
+      str="Update successful!";
+    else
+    str="Update NOT successful!";
+    document.getElementById("updateResult").innerHTML=str;
+    document.getElementById("idUpd").value="";
+    document.getElementById("name2").value="";
+    document.getElementById("height2").value="";
+    document.getElementById("weight2").value="";
+    read();
+  }
+  else
+    document.getElementById("updateResult").innerHTML="Validation error!!";
+}
 
-    makeRequest(apiUrl, 'POST', data)
-        .then(response => {
-            alert('Adat mentése sikeres: ' + response.affectedRows);
-        });
-});
+//delete: resetved word
+async function deleteF(){
+  id = document.getElementById("idDel").value;
+  if(id.length>0 && id.length<=30){
+    let response = await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: "code="+code+"&op=delete&id="+id
+    });
+    let data = await response.text(); 
+    if(data>0)
+      str="Delete successful!";
+    else
+    str="Delete NOT successful!";
+    document.getElementById("deleteResult").innerHTML=str;
+    document.getElementById("idDel").value="";
+    read();
+  }
+  else
+    document.getElementById("deleteResult").innerHTML="Validation error!!";
+}
 
-// READ function
-document.getElementById('loadDataButton').addEventListener('click', function () {
-    const code = prompt("Add meg a code-ot a lekérdezéshez:");
+window.onload = function() {
+    read();
+};
 
-    const data = { op: 'read', code };
-
-    makeRequest(apiUrl, 'POST', data)
-        .then(response => {
-            let output = `<p>Adatok (${response.rowCount} rekord):</p>`;
-            response.list.forEach(item => {
-                output += `
-                    <p>ID: ${item.id} | Név: ${item.name} | Magasság: ${item.height} | Súly: ${item.weight}</p>
-                `;
-            });
-
-            const heights = response.list.map(item => item.height);
-            const sum = heights.reduce((acc, curr) => acc + curr, 0);
-            const average = sum / heights.length;
-            const maxHeight = Math.max(...heights);
-
-            output += `
-                <p>Összeg: ${sum}</p>
-                <p>Átlag: ${average}</p>
-                <p>Legnagyobb magasság: ${maxHeight}</p>
-            `;
-
-            document.getElementById('dataOutput').innerHTML = output;
-        });
-});
-
-// UPDATE function
-document.getElementById('updateForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const id = parseInt(document.getElementById('updateId').value);
-    const name = document.getElementById('updateName').value;
-    const height = parseInt(document.getElementById('updateHeight').value);
-    const weight = parseInt(document.getElementById('updateWeight').value);
-    const code = document.getElementById('updateCode').value;
-
-    // Validation
-    if (name === '' || height <= 0 || weight <= 0 || code === '') {
-        alert('Minden mező kitöltése kötelező!');
-        return;
-    }
-
-    const data = { op: 'update', id, name, height, weight, code };
-
-    makeRequest(apiUrl, 'POST', data)
-        .then(response => {
-            alert('Adat módosítása sikeres: ' + response.affectedRows);
-        });
-});
-
-// DELETE function
-document.getElementById('deleteForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const id = parseInt(document.getElementById('deleteId').value);
-    const code = document.getElementById('deleteCode').value;
-
-    const data = { op: 'delete', id, code };
-
-    makeRequest(apiUrl, 'POST', data)
-        .then(response => {
-            alert('Adat törlése sikeres: ' + response.affectedRows);
-        });
-});
