@@ -1,7 +1,8 @@
-code="EAPH4Pwtr425";
+
 url="http://gamf.nhely.hu/ajax2/";
 async function read() {
-  document.getElementById("code").innerHTML="code="+code;
+    code = document.getElementById("codeIN").value;
+  //document.getElementById("codeIN").innerHTML="code="+code;
   let response = await fetch(url, {
       method: 'post',
       cache: 'no-cache',
@@ -28,6 +29,7 @@ async function create(){
   nameStr = document.getElementById("name1").value;
   height = document.getElementById("height1").value;
   weight = document.getElementById("weight1").value;
+  code = document.getElementById("codeIN").value;
   if(nameStr.length>0 && nameStr.length<=30 && height.length>0 && height.length<=30 && weight.length>0 && weight.length<=30 && code.length<=30){
     let response = await fetch(url, {
       method: 'post',
@@ -69,6 +71,7 @@ async function getDataForId() {
       document.getElementById("name2").value=list[i].name;
       document.getElementById("height2").value=list[i].height;
       document.getElementById("weight2").value=list[i].weight;
+      document.getElementById("codeIN").value=list[i].code;
     }
 }
 
@@ -78,6 +81,7 @@ async function update(){
   nameStr = document.getElementById("name2").value;
   height = document.getElementById("height2").value;
   weight = document.getElementById("weight2").value;
+  code = document.getElementById("codeIN").value;
   if(id.length>0 && id.length<=30 && nameStr.length>0 && nameStr.length<=30 && height.length>0 && height.length<=30 && weight.length>0 && weight.length<=30 && code.length<=30){
     let response = await fetch(url, {
       method: 'post',
@@ -96,7 +100,7 @@ async function update(){
     document.getElementById("idUpd").value="";
     document.getElementById("name2").value="";
     document.getElementById("height2").value="";
-    document.getElementById("weight2").value="";
+    document.getElementById("weight2").value="";    
     read();
   }
   else
