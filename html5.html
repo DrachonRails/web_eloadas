@@ -1,156 +1,120 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>HTML5</title>
-  <style>
-    section {
-      border: 1px solid #ccc;
-      margin: 1em 0;
-      padding: 1em;
-    }
-    h2 {
-      color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Web-programozás-1</title>
+    <style>
+    @import 'style.css';
+    </style>
+    <script type="text/javascript" src = "html5.js"></script>
 </head>
 <body>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
 
-  <h1>HTML5 API-k</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html" class="active">HTML5</a></li>
+            <li><a href="chartJS.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="OOJSmenu.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
 
-  <!-- Web Storage -->
-  <section id="web-storage">
-    <h2>Web Storage (localStorage)</h2>
-    <input type="text" id="storageInput" placeholder="Írj valamit...">
-    <button onclick="saveToStorage()">Mentés</button>
-    <button onclick="loadFromStorage()">Betöltés</button>
-    <p id="storageOutput"></p>
-  </section>
+    <div class="div-content" id="main_content">
+        <!-- IDEPAKOLJ -->
+        <h1>HTML5 API-k</h1>
 
-  <!-- Web Worker -->
-  <section id="web-worker">
-    <h2>Web Worker</h2>
-    <button onclick="startWorker()">Számolás indítása</button>
-    <p id="workerResult">Eredmény itt jelenik meg</p>
-  </section>
+        <!-- Web Storage -->
+        <section id="web-storage">
+          <h2>Web Storage (localStorage)</h2>
+          <input type="text" id="storageInput" placeholder="Írj valamit...">
+          <button onclick="saveToStorage()">Mentés</button>
+          <button onclick="loadFromStorage()">Betöltés</button>
+          <p id="storageOutput"></p>
+        </section>
+      
+        <!-- Web Worker -->
+        <section id="web-worker">
+          <h2>Web Worker</h2>
+          <button onclick="startWorker()">Számolás indítása</button>
+          <p id="workerResult">Eredmény itt jelenik meg</p>
+        </section>
+      
+        <!-- Server-Sent Events -->
+        <section>
+          <h2>Server-Sent Events – Wikimedia stream</h2>
+          <div id="sse-output">🔄 Várakozás az eseményekre...</div>
+        
+          <script>
+            if (!!window.EventSource) {
+              const output = document.getElementById("sse-output");
+        
+              const source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
+        
+              source.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                output.innerHTML = `
+                  📝 <strong>${data.title}</strong> szerkesztve a(z) <em>${data.wiki}</em> wikiben
+                  <br>Felhasználó: ${data.user}
+                `;
+              };
+        
+              source.onerror = function() {
+                output.innerHTML = "❌ Kapcsolat megszakadt vagy hiba történt.";
+              };
+            } else {
+              document.getElementById("sse-output").innerText = "A böngésződ nem támogatja a Server-Sent Events-et.";
+            }
+          </script>
+        </section>
+        
+      
+        <!-- Geolocation API -->
+        <section id="geolocation">
+          <h2>Geolocation API</h2>
+          <button onclick="getLocation()">Mutasd a helyem</button>
+          <p id="locationOutput"></p>
+        </section>
+      
+        <!-- Drag and Drop -->
+        <section id="drag-drop">
+          <h2>Drag and Drop</h2>
+          <div id="drag" draggable="true" ondragstart="dragStart(event)" style="width:100px;height:100px;background:red;"></div>
+          <div id="drop" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:200px;height:200px;background:#eee;margin-top:1em;"></div>
+        </section>
+      
+        <!-- Canvas -->
+        <section id="canvas">
+          <h2>Canvas</h2>
+          <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000;"></canvas>
+        </section>
+      
+        <!-- SVG -->
+        <section id="svg">
+          <h2>SVG</h2>
+          <svg width="200" height="100">
+            <circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="lightblue" />
+            <text x="50" y="55" font-size="14" text-anchor="middle" fill="#000">SVG</text>
+          </svg>
+        </section>
+        <!-- EDDIGPAKOLJ -->
+    </div>
 
-  <!-- Server-Sent Events -->
-  <section>
-    <h2>Server-Sent Events – Wikimedia stream</h2>
-    <div id="sse-output">🔄 Várakozás az eseményekre...</div>
-  
-    <script>
-      if (!!window.EventSource) {
-        const output = document.getElementById("sse-output");
-  
-        const source = new EventSource("https://stream.wikimedia.org/v2/stream/recentchange");
-  
-        source.onmessage = function(event) {
-          const data = JSON.parse(event.data);
-          output.innerHTML = `
-            📝 <strong>${data.title}</strong> szerkesztve a(z) <em>${data.wiki}</em> wikiben
-            <br>Felhasználó: ${data.user}
-          `;
-        };
-  
-        source.onerror = function() {
-          output.innerHTML = "❌ Kapcsolat megszakadt vagy hiba történt.";
-        };
-      } else {
-        document.getElementById("sse-output").innerText = "A böngésződ nem támogatja a Server-Sent Events-et.";
-      }
-    </script>
-  </section>
-  
+    <aside>
+        <h3>Wikipedia - HTML (rövidített)</h3>
+        <p>A <b>HTML</b> (HyperText Markup Language) egy leíró nyelv, amelyet weboldalak készítésére használnak. A böngészők értelmezik és jelenítik meg a HTML dokumentumokat. A HTML elemekből (tagekből) épül fel, amelyek meghatározzák a tartalom szerkezetét és megjelenését.</p>
+        <p>A legfontosabb HTML elemek közé tartoznak a címek (&lt;h1&gt; - &lt;h6&gt;), bekezdések (&lt;p&gt;), hivatkozások (&lt;a&gt;), képek (&lt;img&gt;), listák (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;) és táblázatok (&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;).</p>
+        <p>A HTML dokumentumok szerkezetét a &lt;!DOCTYPE html&gt; deklaráció, a &lt;html&gt;, &lt;head&gt; és &lt;body&gt; gyökérelemek határozzák meg. A &lt;head&gt; rész metaadatokat (pl. karakterkódolás, cím) és külső hivatkozásokat (pl. CSS fájlok) tartalmaz, míg a &lt;body&gt; rész a tényleges megjelenítendő tartalmat foglalja magában.</p>
+        <p><a href="https://hu.wikipedia.org/wiki/HTML" target="_blank">További információ a Wikipédián</a></p>
+    </aside>
 
-  <!-- Geolocation API -->
-  <section id="geolocation">
-    <h2>Geolocation API</h2>
-    <button onclick="getLocation()">Mutasd a helyem</button>
-    <p id="locationOutput"></p>
-  </section>
-
-  <!-- Drag and Drop -->
-  <section id="drag-drop">
-    <h2>Drag and Drop</h2>
-    <div id="drag" draggable="true" ondragstart="dragStart(event)" style="width:100px;height:100px;background:red;"></div>
-    <div id="drop" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:200px;height:200px;background:#eee;margin-top:1em;"></div>
-  </section>
-
-  <!-- Canvas -->
-  <section id="canvas">
-    <h2>Canvas</h2>
-    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000;"></canvas>
-  </section>
-
-  <!-- SVG -->
-  <section id="svg">
-    <h2>SVG</h2>
-    <svg width="200" height="100">
-      <circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="lightblue" />
-      <text x="50" y="55" font-size="14" text-anchor="middle" fill="#000">SVG</text>
-    </svg>
-  </section>
-
-  <!-- Script -->
-  <script>
-    // Web Storage
-    function saveToStorage() {
-      const val = document.getElementById('storageInput').value;
-      localStorage.setItem('myValue', val);
-    }
-    function loadFromStorage() {
-      document.getElementById('storageOutput').textContent = localStorage.getItem('myValue');
-    }
-
-    // Web Worker
-    let worker;
-    function startWorker() {
-      if (typeof(Worker) !== "undefined") {
-        if (!worker) {
-          worker = new Worker("worker.js");
-        }
-        worker.onmessage = function(e) {
-          document.getElementById("workerResult").textContent = e.data;
-        };
-        worker.postMessage("start");
-      } else {
-        alert("A böngésződ nem támogatja a Web Worker API-t.");
-      }
-    }
-
-    // Geolocation
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          document.getElementById("locationOutput").textContent = 
-            "Szélesség: " + position.coords.latitude + 
-            ", Hosszúság: " + position.coords.longitude;
-        });
-      } else {
-        document.getElementById("locationOutput").textContent = "A böngésződ nem támogatja a Geolocation API-t.";
-      }
-    }
-
-    // Drag & Drop
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
-    function dragStart(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-    }
-    function drop(ev) {
-      ev.preventDefault();
-      const data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
-    }
-
-    // Canvas rajzolás
-    const canvas = document.getElementById("myCanvas");
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "green";
-    ctx.fillRect(10, 10, 150, 75);
-  </script>
-
+    <footer>
+        Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P
+    </footer>
 </body>
 </html>

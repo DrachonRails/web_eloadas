@@ -2,79 +2,13 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web-programozás-1</title>
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            grid-template-areas:
-                "header  header  header"
-                "nav     nav        nav"
-                "content content  aside"
-                "footer  footer  footer";
-            grid-template-rows: auto 1fr auto;
-            grid-template-columns: auto 1fr 300px;
-            
-        }
-
-        header {
-            grid-area: header;
-            background-color: #f0f0f0;
-            padding: 1em;
-            text-align: center;
-        }
-
-        nav {
-            grid-area: nav;
-
-            background-color: #ddd;
-            padding: 1em;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        nav ul li {
-            margin-right: 1em;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #333;
-            padding: 0.5em 1em;
-        }
-
-        nav ul li a.active {
-            font-weight: bold;
-            background-color: #ccc;
-        }
-
-        .div-content {
-            grid-area: content;
-            padding: 1em;
-        }
-
-        aside {
-            grid-area: aside;
-            background-color: #eee;
-            padding: 1em;
-        }
-
-        footer {
-            grid-area: footer;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em;
-        }
+    @import 'style.css';
     </style>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <header>
@@ -83,16 +17,122 @@
 
     <nav>
         <ul>
-            <li><a href="index.html" class="active">Főoldal</a></li>
-            <li><a href="bemutatkozas.html">Bemutatkozás</a></li>
-            <li><a href="galeria.html">Galéria</a></li>
-            <li><a href="kapcsolat.html">Kapcsolat</a></li>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5</a></li>
+            <li><a href="chartJS.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="OOJSmenu.html">OOJS</a></li>
+            <li><a href="react.html" class="active">React</a></li>
         </ul>
     </nav>
 
-    <div class="div-content">
-        <h2>Üdvözöllek a Főoldalon!</h2>
-        <p>A menü segítségével navigálhatsz a különböző oldalak között.</p>
+    <div class="div-content" id="main_content">
+        <!-- IDEPAKOLJ -->
+        <nav class="navReact">
+            <button onclick="setApp('game')">Kő Papír Olló</button>
+            <button onclick="setApp('stopper')">Stopper</button>
+          </nav>
+          <div id="root"></div>
+      
+          <script type="text/babel">
+      
+            const { useState, useEffect } = React;
+      
+            // Kő Papír Olló játék
+            function KoPapirOllo() {
+              const choices = ["Kő", "Papír", "Olló"];
+              const [playerChoice, setPlayerChoice] = useState("");
+              const [computerChoice, setComputerChoice] = useState("");
+              const [result, setResult] = useState("");
+              const [score, setScore] = useState(0);
+      
+              const play = (choice) => {
+                const computer = choices[Math.floor(Math.random() * 3)];
+                setPlayerChoice(choice);
+                setComputerChoice(computer);
+      
+                if (choice === computer) {
+                  setResult("Döntetlen!");
+                } else if (
+                  (choice === "Kő" && computer === "Olló") ||
+                  (choice === "Papír" && computer === "Kő") ||
+                  (choice === "Olló" && computer === "Papír")
+                ) {
+                  setResult("Nyertél!");
+                  setScore(score + 1);
+                } else {
+                  setResult("Vesztettél!");
+                  setScore(score - 1);
+                }
+              };
+      
+              return (
+                <div>
+                  <h2>Kő – Papír – Olló</h2>
+                  {choices.map((choice) => (
+                    <button key={choice} onClick={() => play(choice)}>
+                      {choice}
+                    </button>
+                  ))}
+                  <p>Te: {playerChoice}</p>
+                  <p>Számítógép: {computerChoice}</p>
+                  <p>Eredmény: {result}</p>
+                  <p>Pontszám: {score}</p>
+                </div>
+              );
+            }
+      
+            // Stopper
+            function Stopper() {
+              const [time, setTime] = useState(0);
+              const [running, setRunning] = useState(false);
+      
+              useEffect(() => {
+                let interval;
+                if (running) {
+                  interval = setInterval(() => {
+                    setTime((t) => t + 1);
+                  }, 10); // Módosítva, hogy milliszekundumot mérjünk
+                }
+                return () => clearInterval(interval);
+              }, [running]);
+      
+              return (
+                <div>
+                  <h2>Stopper</h2>
+                  <p>{time / 100} másodperc</p> {/* Ez milliszekundumban lesz */}
+                  <button onClick={() => setRunning(true)}>Indít</button>
+                  <button onClick={() => setRunning(false)}>Megállít</button>
+                  <button onClick={() => { setTime(0); setRunning(false); }}>Nulláz</button>
+                </div>
+              );
+            }
+      
+            // Az alkalmazás fő komponens
+            function App({ activeApp }) {
+              return (
+                <div>
+                  {activeApp === "game" && <KoPapirOllo />}
+                  {activeApp === "stopper" && <Stopper />}
+                </div>
+              );
+            }
+      
+            // Kezdeti alkalmazás állapot
+            let currentApp = "game";
+            function setApp(app) {
+              currentApp = app;
+              render();
+            }
+      
+            function render() {
+              ReactDOM.createRoot(document.getElementById("root")).render(<App activeApp={currentApp} />);
+            }
+      
+            render(); // Kezdeti render
+          </script>
+        <!-- EDDIGPAKOLJ -->
     </div>
 
     <aside>

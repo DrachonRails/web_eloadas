@@ -48,6 +48,11 @@ nav ul li a.active {
   background-color: #ccc;
 }
 
+nav ul li a:hover {
+  color: yellowgreen;
+  font-style: italic;
+}
+
 .div-content {
   grid-area: content;
   padding: 1em;

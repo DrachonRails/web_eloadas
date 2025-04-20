@@ -1,36 +1,71 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-  <meta charset="utf-8">
-  <script type="text/javascript" src = "ajax.js"></script>
-  <title>Ajax</title>
-  </head>
-  <body>
-    <div id = 'code'>code (required, BBBBBBefg456) <input id="codeIN" type="varchar"></input><br><button type="submit" onclick="read();">read</button><br></div>
-    <div id = 'readDiv'></div>
-    <div id = 'createDiv'>
-      <h1>Create</h1>
-      Name (required, max 30): <input id="name1" type="text"></input><br>
-      height (required, max 30): <input id="height1" type="number"></input><br>
-      weight (required, max 30): <input id="weight1" type="number"></input><br>
-      <button type="submit" onclick="create();">Create</button><br>
-      <div id = 'createResult'></div>
-    </div> 
-    <div id = 'updateDiv'>
-      <h1>Update</h1>
-      ID (required): <input id="idUpd" type="text"></input><br> 
-      <button type="submit" onclick="getDataForId();">getDataForId</button><br>
-      Name (required, max 30): <input id="name2" type="text"></input><br>
-      height (required, max 30): <input id="height2" type="number"></input><br>
-      weight (required, max 30): <input id="weight2" type="number"></input><br>      
-      <button type="submit" onclick="update();">Update</button><br>
-      <div id = 'updateResult'></div>      
-    </div> 
-    <div id = 'deleteDiv'>
-      <h1>Delete</h1>
-      ID (required): <input id="idDel" type="number"></input><br> 
-      <button type="submit" onclick="deleteF();">Delete</button><br>
-      <div id = 'deleteResult'></div>      
-    </div> 
-  </body>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Web-programozás-1</title>
+    <style>
+    @import 'style.css';
+    </style>
+    <script src = "ajax.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5</a></li>
+            <li><a href="chartJS.html">ChartJS</a></li>
+            <li><a href="ajax.html" class="active">AJAX</a></li>
+            <li><a href="OOJSmenu.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+
+    <div class="div-content" id="main_content">
+        <!-- IDEPAKOLJ -->
+        <div id = 'code'>code (required, BBBBBBefg456) <input id="codeIN" type="varchar"></input><br><button type="submit" onclick="read();">read</button><br></div>
+        <div id = 'readDiv'></div>
+        <div id = 'createDiv'>
+          <h1>Create</h1>
+          Name (required, max 30): <input id="name1" type="text"></input><br>
+          height (required, max 30): <input id="height1" type="number"></input><br>
+          weight (required, max 30): <input id="weight1" type="number"></input><br>
+          <button type="submit" onclick="create();">Create</button><br>
+          <div id = 'createResult'></div>
+        </div> 
+        <div id = 'updateDiv'>
+          <h1>Update</h1>
+          ID (required): <input id="idUpd" type="text"></input><br> 
+          <button type="submit" onclick="getDataForId();">getDataForId</button><br>
+          Name (required, max 30): <input id="name2" type="text"></input><br>
+          height (required, max 30): <input id="height2" type="number"></input><br>
+          weight (required, max 30): <input id="weight2" type="number"></input><br>      
+          <button type="submit" onclick="update();">Update</button><br>
+          <div id = 'updateResult'></div>      
+        </div> 
+        <div id = 'deleteDiv'>
+          <h1>Delete</h1>
+          ID (required): <input id="idDel" type="number"></input><br> 
+          <button type="submit" onclick="deleteF();">Delete</button><br>
+          <div id = 'deleteResult'></div>      
+        </div> 
+        <!-- EDDIGPAKOLJ -->
+    </div>
+
+    <aside>
+        <h3>Wikipedia - HTML (rövidített)</h3>
+        <p>A <b>HTML</b> (HyperText Markup Language) egy leíró nyelv, amelyet weboldalak készítésére használnak. A böngészők értelmezik és jelenítik meg a HTML dokumentumokat. A HTML elemekből (tagekből) épül fel, amelyek meghatározzák a tartalom szerkezetét és megjelenését.</p>
+        <p>A legfontosabb HTML elemek közé tartoznak a címek (&lt;h1&gt; - &lt;h6&gt;), bekezdések (&lt;p&gt;), hivatkozások (&lt;a&gt;), képek (&lt;img&gt;), listák (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;) és táblázatok (&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;).</p>
+        <p>A HTML dokumentumok szerkezetét a &lt;!DOCTYPE html&gt; deklaráció, a &lt;html&gt;, &lt;head&gt; és &lt;body&gt; gyökérelemek határozzák meg. A &lt;head&gt; rész metaadatokat (pl. karakterkódolás, cím) és külső hivatkozásokat (pl. CSS fájlok) tartalmaz, míg a &lt;body&gt; rész a tényleges megjelenítendő tartalmat foglalja magában.</p>
+        <p><a href="https://hu.wikipedia.org/wiki/HTML" target="_blank">További információ a Wikipédián</a></p>
+    </aside>
+
+    <footer>
+        Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P
+    </footer>
+</body>
 </html>

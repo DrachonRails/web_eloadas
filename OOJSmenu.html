@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <title>Szabályos Sokszög Számítások</title>
-
+    <meta charset="UTF-8">
+    <title>Web-programozás-1</title>
+    <style>
+    @import 'style.css';
+    </style>
+    <script src = "OOJSmenu.js"></script>
 </head>
 <body>
-    <h1>Szabályos Sokszög Számítások</h1>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5</a></li>
+            <li><a href="chartJS.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="OOJSmenu.html" class="active">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+
+    <div class="div-content" id="main_content">
+        <!-- IDEPAKOLJ -->
+        <h1>Szabályos Sokszög Számítások</h1>
     <label for="sides">Oldalak száma:</label>
     <input type="number" id="sides" name="sides"><br>
     <label for="sideLength">Oldalhossz:</label>
@@ -15,61 +37,19 @@
     <h2>Eredmények:</h2>
     <div id="results"></div>
 
-    <script>
-        class Shape {
-            constructor(sides, sideLength) {
-                this.sides = sides;
-                this.sideLength = sideLength;
-            }
+        <!-- EDDIGPAKOLJ -->
+    </div>
 
-            perimeter() {
-                return this.sides * this.sideLength;
-            }
+    <aside>
+        <h3>Wikipedia - HTML (rövidített)</h3>
+        <p>A <b>HTML</b> (HyperText Markup Language) egy leíró nyelv, amelyet weboldalak készítésére használnak. A böngészők értelmezik és jelenítik meg a HTML dokumentumokat. A HTML elemekből (tagekből) épül fel, amelyek meghatározzák a tartalom szerkezetét és megjelenését.</p>
+        <p>A legfontosabb HTML elemek közé tartoznak a címek (&lt;h1&gt; - &lt;h6&gt;), bekezdések (&lt;p&gt;), hivatkozások (&lt;a&gt;), képek (&lt;img&gt;), listák (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;) és táblázatok (&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;).</p>
+        <p>A HTML dokumentumok szerkezetét a &lt;!DOCTYPE html&gt; deklaráció, a &lt;html&gt;, &lt;head&gt; és &lt;body&gt; gyökérelemek határozzák meg. A &lt;head&gt; rész metaadatokat (pl. karakterkódolás, cím) és külső hivatkozásokat (pl. CSS fájlok) tartalmaz, míg a &lt;body&gt; rész a tényleges megjelenítendő tartalmat foglalja magában.</p>
+        <p><a href="https://hu.wikipedia.org/wiki/HTML" target="_blank">További információ a Wikipédián</a></p>
+    </aside>
 
-            area() {
-                const apothem = this.sideLength / (2 * Math.tan(Math.PI / this.sides));
-                return (this.perimeter() * apothem) / 2;
-            }
-        }
-
-        class Polygon extends Shape {
-            constructor(sides, sideLength) {
-                super(sides, sideLength);
-            }
-
-            interiorAngle() {
-                return ((this.sides - 2) * 180) / this.sides;
-            }
-
-            exteriorAngle() {
-                return 360 - ((this.sides - 2) * 180) / this.sides;
-            }
-        }
-
-        function calculate() {
-            const sides = document.getElementById('sides').value;
-            const sideLength = document.getElementById('sideLength').value;
-            const polygon = new Polygon(sides, sideLength);
-
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
-
-            const perimeterP = document.createElement('p');
-            perimeterP.innerText = `Kerület: ${polygon.perimeter()}`;
-            document.body.appendChild(perimeterP);
-
-            const areaP = document.createElement('p');
-            areaP.innerText = `Terület: ${polygon.area()}`;
-            document.body.appendChild(areaP);
-
-            const interiorAngleP = document.createElement('p');
-            interiorAngleP.innerText = `Belső szög: ${polygon.interiorAngle()}`;
-            document.body.appendChild(interiorAngleP);
-
-            const exteriorAngleP = document.createElement('p');
-            exteriorAngleP.innerText = `Külső szög: ${polygon.exteriorAngle()}`;
-            document.body.appendChild(exteriorAngleP);
-        }
-    </script>
+    <footer>
+        Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P
+    </footer>
 </body>
 </html>

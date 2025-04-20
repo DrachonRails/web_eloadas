@@ -1,66 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="hu">
 <head>
-    <title>Table to Line Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Web-programozás-1</title>
     <style>
-        @import "style.css";   
+    @import 'style.css';
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src = "chartjs.js"></script>
 </head>
 <body>
-    <table id="dataTable">
-        <tbody>
-            <!-- Table rows will be generated dynamically -->
-        </tbody>
-    </table>
-    <canvas id="lineChart" width="400" height="200"></canvas>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
 
-    <script>
-        // Generate a 5x5 table with random numbers from 1-100
-        const table = document.getElementById('dataTable');
-        for (let i = 0; i < 5; i++) {
-            const row = document.createElement('tr');
-            for (let j = 0; j < 5; j++) {
-                const cell = document.createElement('td');
-                cell.textContent = Math.floor(Math.random() * 100) + 1;
-                row.appendChild(cell);
-            }
-            table.appendChild(row);
-        }
+    <nav>
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5</a></li>
+            <li><a href="chartJS.html" class="active">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="OOJSmenu.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
 
-        // Initialize Chart.js
-        const ctx = document.getElementById('lineChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['1', '2', '3', '4', '5'], // X-axis labels
-                datasets: [{
-                    label: 'Selected Row Data',
-                    data: [],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+    <div class="div-content" id="main_content">
+        <!-- IDEPAKOLJ -->
+        <table id="dataTable">
+            <tbody>
+                <!-- Table rows will be generated dynamically -->
+            </tbody>
+        </table>
+        <canvas id="lineChart" width="400" height="200"></canvas>
+    
+        <!-- EDDIGPAKOLJ -->
+    </div>
 
-        // Add click event to table rows
-        table.addEventListener('click', (event) => {
-            const row = event.target.parentNode;
-            if (row.tagName === 'TR') {
-                const rowData = Array.from(row.children).map(cell => Number(cell.textContent));
-                chart.data.datasets[0].data = rowData;
-                chart.update();
-            }
-        });
-    </script>
+    <aside>
+        <h3>Wikipedia - HTML (rövidített)</h3>
+        <p>A <b>HTML</b> (HyperText Markup Language) egy leíró nyelv, amelyet weboldalak készítésére használnak. A böngészők értelmezik és jelenítik meg a HTML dokumentumokat. A HTML elemekből (tagekből) épül fel, amelyek meghatározzák a tartalom szerkezetét és megjelenését.</p>
+        <p>A legfontosabb HTML elemek közé tartoznak a címek (&lt;h1&gt; - &lt;h6&gt;), bekezdések (&lt;p&gt;), hivatkozások (&lt;a&gt;), képek (&lt;img&gt;), listák (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;) és táblázatok (&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;).</p>
+        <p>A HTML dokumentumok szerkezetét a &lt;!DOCTYPE html&gt; deklaráció, a &lt;html&gt;, &lt;head&gt; és &lt;body&gt; gyökérelemek határozzák meg. A &lt;head&gt; rész metaadatokat (pl. karakterkódolás, cím) és külső hivatkozásokat (pl. CSS fájlok) tartalmaz, míg a &lt;body&gt; rész a tényleges megjelenítendő tartalmat foglalja magában.</p>
+        <p><a href="https://hu.wikipedia.org/wiki/HTML" target="_blank">További információ a Wikipédián</a></p>
+    </aside>
+
+    <footer>
+        Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P
+    </footer>
 </body>
 </html>
