@@ -1,59 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="hu">
 <head>
-<title>Beadando - AD0L3N EAPH4P</title>
-<style>
-  @import "style.css";   
- </style>
+    <meta charset="UTF-8">
+    <title>Web-programozás-1</title>
+    <style>
+    @import 'style.css';
+    </style>
+    <script type="text/javascript" src = "index.js"></script>
 </head>
 <body>
-<!-- header, footer, aside, nav, div-content, A div-content  -->
-<header>
-<h1>Web-programozas Eloadas Hazi Feladat</h1>
-</header>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
 
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Főoldal</a></li>
+            <li><a href="tablazat.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5</a></li>
+            <li><a href="chartJS.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="OOJS.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
 
-<nav>
-  <ul>
-    <li><a href="#" onclick="loadContent('tablazat.html')">Tablazat</a></li>
-    <li><a href="#" onclick="loadContent('chartJS.html')">chartJS</a></li>
-    <li><a href="#" onclick="loadContent('services.html')">Services</a></li>
-    <li><a href="#" onclick="loadContent('contact.html')">Contact</a></li>
-  </ul>
-</nav>
+    <div class="div-content" id="main_content">
+        <h2>Üdvözöllek a Főoldalon!</h2>
+        <p>A menü segítségével navigálhatsz a különböző oldalak között.</p>
+    </div>
 
-<div id="content">
-Placeholder for dynamic content
-</div>
+    <aside>
+        <h3>Wikipedia - HTML (rövidített)</h3>
+        <p>A <b>HTML</b> (HyperText Markup Language) egy leíró nyelv, amelyet weboldalak készítésére használnak. A böngészők értelmezik és jelenítik meg a HTML dokumentumokat. A HTML elemekből (tagekből) épül fel, amelyek meghatározzák a tartalom szerkezetét és megjelenését.</p>
+        <p>A legfontosabb HTML elemek közé tartoznak a címek (&lt;h1&gt; - &lt;h6&gt;), bekezdések (&lt;p&gt;), hivatkozások (&lt;a&gt;), képek (&lt;img&gt;), listák (&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;) és táblázatok (&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;).</p>
+        <p>A HTML dokumentumok szerkezetét a &lt;!DOCTYPE html&gt; deklaráció, a &lt;html&gt;, &lt;head&gt; és &lt;body&gt; gyökérelemek határozzák meg. A &lt;head&gt; rész metaadatokat (pl. karakterkódolás, cím) és külső hivatkozásokat (pl. CSS fájlok) tartalmaz, míg a &lt;body&gt; rész a tényleges megjelenítendő tartalmat foglalja magában.</p>
+        <p><a href="https://hu.wikipedia.org/wiki/HTML" target="_blank">További információ a Wikipédián</a></p>
+    </aside>
 
-<aside>
-  <object type="text/html" data="http://validator.w3.org/">
-  </object>
-
-</aside>
-
-<footer>
-<p>Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P</p>
-</footer>
-
-
-
+    <footer>
+        Készítette: Ablonczi Balázs – AD0L3N és Simkó László - EAPH4P
+    </footer>
 </body>
-<script>
-function loadContent(url) {
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById('content').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-  }
-</script>
 </html>
